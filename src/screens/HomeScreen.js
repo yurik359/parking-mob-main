@@ -1,5 +1,5 @@
 import { Text, StyleSheet, View, SafeAreaView, Pressable,TextInput,TouchableOpacity,Platform,Linking } from "react-native";
-import * as Permissions from 'react-native-permissions';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestForegroundPermissionsAsync,getCurrentPositionAsync } from "expo-location";
 import { Camera } from'expo-camera'
@@ -117,26 +117,29 @@ const HomeScreen =  () => {
     const [cameraView, setCameraView] = useState(false);
     const [cameraPermission, setCameraPermission] = useState(null);
    
-    const cameraPermisionFunction = async () => {
+    // const cameraPermisionFunction = async () => {
       
-        const cameraPermission = await Camera.requestCameraPermissionsAsync();
+    //     const cameraPermission = await Camera.requestCameraPermissionsAsync();
      
-        setCameraPermission(cameraPermission.granted);
+    //     setCameraPermission(cameraPermission.granted);
        
-    };
+    // };
 
-    useEffect(() => {
+    // useEffect(() => {
         
-        cameraPermisionFunction();
-    }, []);
+    //     cameraPermisionFunction();
+    // }, []);
 
     const onScanerPress = async () => {
       
         if (!cameraPermission) {
             
             const cameraPermission = await Camera.requestCameraPermissionsAsync();
-            console.log(cameraPermission)
-            alert(cameraPermission.granted)      
+           if(cameraPermission.granted===true){
+            setCameraView(true)  
+           }
+              
+            
             return setCameraPermission(cameraPermission.granted);
         }
         setCameraView(!cameraView);
@@ -219,21 +222,8 @@ const [closeAddressesList, setCloseAddressesList] = useState(false);
       const [scanned, setScanned] = useState(false);
       const [scannedData, setScannedData] = useState('');
       const webcamRef = useRef(null);
-      const requestCameraPermission = async () => {
-        try {
-          // Вызов метода для получения разрешения на камеру
-         const res = await navigator.mediaDevices.getUserMedia({ video: true })
-    alert(res)
-          console.log('Camera access granted');
-          // Дальнейшая обработка
-        } catch (error) {
-          alert('dsadsd')
-          console.error('Camera access denied:', error);
-        }
-      };
-      useEffect(()=>{
-        requestCameraPermission()
-      },[])
+     
+    
       const openPaymentPage = async () => {
         try {
            const res =await getPaymentPage()
